@@ -1,0 +1,4 @@
+[Project]
+Name=spectral_fun2
+Manager=KDevCMakeManager
+VersionControl=kdevgit
