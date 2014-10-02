@@ -75,34 +75,20 @@ int main(int argc, char **argv) {
   infile.close(); //get rid of the stream
   
   lines.pop_back(); //why the heck does it put the eof-marker there?
- /* lines.pop_back();*/
   
   sample_count = lines.size(); //jep, that's the way
-  //cout << "The input file vector contains " << lines.size() <<"lines!\n";
-  
   
   double *samples; //let us get some variables
   fftw_complex *fftout;
   fftout = fftw_alloc_complex((sample_count)/2+1); //mem must be allocated in the first place
   samples = fftw_alloc_real(sample_count);
   
-  /*for(int i = 0; i<sample_count-1; i++){
-     samples[i]=0; //initialize the array with 0, for debugging purpose only 
-  }*/
-  
-  for (int i = 0; i<lines.size(); i++){ //Hardcore C++-Verwirrung for parsing the damn input. Like perl very much, but this is horrible here...
+  for (int i = 0; i < lines.size(); i++){ //Hardcore C++-Verwirrung for parsing the damn input. Like perl very much, but this is horrible here...
     lines.at(i).erase(0, lines.at(i).find(delimiter) + delimiter.length());
     samples[i] = boost::lexical_cast<double> (lines.at(i));
-    //cout << samples[i] << "\n";
   }
   
   cout << "Init finished \n"; //Now everything should be in place!
-  
-  /*for (int i = 0; i < sample_count; i++){ //Is everything there? Let's have a look at it!
-    cout << i << " "<< samples[i] << "\n";
-      }
-      
-      cout  << "Previously stands the samples array before doing anything with it!\n";*/
   
   p = fftw_plan_dft_r2c_1d(sample_count, samples, fftout,0); //There we go;
   fftw_execute(p); //Run the thing!
